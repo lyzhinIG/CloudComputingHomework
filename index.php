@@ -10,32 +10,34 @@ function dataClean($str){
 }
 
 function addMesLog($mes){
-    file_put_contents('../log/log.txt', "[".date("Y-m-d H:i:s")."] ".$mes."\n", FILE_APPEND | LOCK_EX);
+    $logFile = '../log/log.txt';
+    $flagWriteLog=file_put_contents($logFile, "[".date("Y-m-d H:i:s")."] ".$mes."\n", FILE_APPEND | LOCK_EX);
+    if ($flagWriteLog === false) {
+        error_log("Failed to write to log file: $logFile");
+    }
 }
 
 function checkingThereNotNumber($db, $number){
     $stmt = $db->prepare('SELECT COUNT(`id`) as count_value  FROM `homework2` WHERE `value_number`=?');
     $stmt->execute([$number]);
     $data = $stmt->fetch();
-    if(isset($data->count_value)){
-        if($data->count_value>0){
-            return false;
-        } else{
+    if(isset($data->count_value)) {
+        if($data->count_value<1){
             return true;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 function addNumberDataBase($db, $number){
     $stmt = $db->prepare('INSERT INTO `homework2` (`value_number`) VALUES (?)');
     $stmt->bindValue(1,$number,PDO::PARAM_INT);
-    $stmt->execute();
+    $flag=$stmt->execute();
+    if (!$flag) {
+        addMesLog("Failed to insert number(ошибка добавления числа): ".$number);
+    }
+    return $flag;
 }
-
-
-
 
 function validateNumberField() {
     $A = array(
@@ -51,7 +53,7 @@ function validateNumberField() {
         //var_dump($value,$_POST['number'],strval($value));
         if (strval($value)==$_POST['number']) {
             $A['value']=$value;
-            if ($value>0 and $value<N){
+            if ($value>=0 and $value<=N) {
                 $A['status'] = true;
             } else{
                 $A['info'] = $A['info'].' The number is not in the required range(число меньше 0 или больше N).';
@@ -68,29 +70,32 @@ function validateNumberField() {
 
 function dataProcessing(){
     $data = validateNumberField();
-    $answer =  array();
-    $answer['status'] = 500;
-    if($data['status']){
-        $db = dbConnect();
-        if (checkingThereNotNumber($db,$data['value'])){
-            if (checkingThereNotNumber($db,$data['value']+1)){
-                addNumberDataBase($db,$data['value']);
-                $answer['status'] = 200;
-                $answer['newValue'] = $data['value']+1;
-            } else {
-                $answer['status'] = 400;
-                $answer['description'] = "current number that is one less than an existing number(число на едицицу меньше, чем уже существующее)";
-                addMesLog($answer['description']."| value = ".$data['value']);
-            }
-
-        } else {
-            $answer['status'] = 400;
-            $answer['description'] = "the number was already there(число уже было)";
-            addMesLog($answer['description']."| value = ".$data['value']);
-        }
-    } else {
+    $answer =  array('status'=>500);
+    if (!$data['status']) {
         $answer['status'] = 400;
         $answer['description'] = $data['info'];
+        return $answer;
+    }
+    $db = dbConnect();
+    //число уже было
+    if (!checkingThereNotNumber($db, $data['value'])) {
+        $answer['status'] = 400;
+        $answer['description'] = "the number was already there (число уже было)";
+        addMesLog($answer['description'] . "| value = " . $data['value']);
+        return $answer;
+    }
+    //число на единицу меньше, чем уже существующее
+    if (!checkingThereNotNumber($db, $data['value'] + 1)) {
+        $answer['status'] = 400;
+        $answer['description'] = "current number that is one less than an existing number (число на единицу меньше, чем уже существующее)";
+        addMesLog($answer['description'] . "| value = " . $data['value']);
+        return $answer;
+    }
+    //добавление в БД
+    if(addNumberDataBase($db, $data['value'])) {
+        $answer['status'] = 200;
+        $answer['newValue'] = $data['value'] + 1;
+        return $answer;
     }
     return $answer;
 }
@@ -101,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if($dataOutProcessing['status']==400){
         echo 'Ошибка. Error. '.$dataOutProcessing['description'];
     } else {
-        if($dataOutProcessing['status']==200){
+        if ($dataOutProcessing['status']==200) {
             echo $dataOutProcessing['newValue'];
         } else {
             echo 'Неизвестная ошибка. Unknown error.';
