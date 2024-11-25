@@ -2,9 +2,9 @@
 
 ### achievement №2
 ### Команда:
-- Еременко Екатерина 
+- [Еременко Екатерина](https://github.com/erkath)
 - [Коровин Евгений](https://github.com/EvgeniyKorovin1)
-- Лыжин Илья
+- [Лыжин Илья](https://github.com/lyzhinIG)
 
 ### Демо
 
