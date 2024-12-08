@@ -1,0 +1,31 @@
+services:
+  app:
+    image: iliyahse/miemhomeworkrestachivment2:1.1
+    ports:
+      - 8080:80
+    environment:
+      hostDB: 172.18.0.2
+      nameDB: test_dev_iot
+      userDB: test
+      passDB: testpassword
+      logPath: ./example.txt
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:10.3
+    volumes:
+      - ./mariadb:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links: 
+      - mariadb:db
+    ports:
+      - 8082:80
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - mariadb
