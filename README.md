@@ -24,6 +24,7 @@ response = requests.request("POST", url, data=payload, headers=headers)
 
 print(response.text)
 ```
+Все файлы задания находятся в папке **achievement2**.
 
 ### achievement №3
 Docker Pull Command
