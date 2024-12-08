@@ -39,3 +39,4 @@ Docker Pull Command
       passDB: testpassword
       logPath: ./example.txt
 ```
+Пример `docker-compose.yml` находится в папке **achievement3**.
