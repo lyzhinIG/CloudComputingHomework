@@ -1,6 +1,6 @@
 ## Дисциплина: Построение распределенных систем и облачные вычисления
 
-### achievement №2
+### Achievement №2
 ### Команда:
 - [Еременко Екатерина](https://github.com/erkath)
 - [Коровин Евгений](https://github.com/EvgeniyKorovin1)
@@ -26,7 +26,7 @@ print(response.text)
 ```
 Все файлы задания находятся в папке **achievement2**.
 
-### achievement №3
+### Achievement №3
 Docker Pull Command
 
 ```bash
