@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-19
+spec:
+  selector:
+    matchLabels:
+      app: app
+  replicas: 1 # tells deployment to run 1 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: iliyahse/miemhomeworkrestachivment2:1.1
+        ports:
+        - containerPort: 80
+        env:
+        - name: hostDB
+          value: "localhost"
+        - name: nameDB
+          value: "test_dev_iot"
+        - name: userDB
+          value: "test"
+        - name: passDB
+          value: "testpassword"
+        - name: logPath
+          value: "./example.txt"
