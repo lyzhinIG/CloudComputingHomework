@@ -1,7 +1,10 @@
 <?php
 require_once './db.php';
 
-CONST N=2147683640;
+$N=getenv('nMax', true) ?: getenv('nMax');
+if ($N<1 or !isset($N)){
+    $N=200000;
+}
 //$LOG_PATH_FILE=getenv('logPath', true) ?: getenv('logPath');
 function dataClean($str){
     $str=htmlspecialchars($str, ENT_QUOTES);
@@ -45,6 +48,7 @@ function validateNumberField() {
         'value' => -1,
         'info' => ''
     );
+    global $N;
     if (!isset($_POST['number'])) {
         $A['info'] = $A['info'].' There is no field "number" (нет нужного поля в запросе).';
         $A['status'] = false;
@@ -53,7 +57,7 @@ function validateNumberField() {
         //var_dump($value,$_POST['number'],strval($value));
         if (strval($value)==$_POST['number']) {
             $A['value']=$value;
-            if ($value>=0 and $value<=N) {
+            if ($value>=0 and $value<=$N) {
                 $A['status'] = true;
             } else{
                 $A['info'] = $A['info'].' The number is not in the required range(число меньше 0 или больше N).';
