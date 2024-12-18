@@ -43,5 +43,6 @@ docker pull iliyahse/miemhomeworkrestachivment2
       userDB: test
       passDB: testpassword
       logPath: ./example.txt
+      nMax: 3000
 ```
 Пример `docker-compose.yml` находится в папке **achievement3**.
