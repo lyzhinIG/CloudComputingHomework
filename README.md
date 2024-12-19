@@ -2,9 +2,9 @@
 
 ### UPD 
 
-**20.12:** Добавлен метод /install создающий базу данных и таблицу с нужными столбцами. Актуальная версия образа miemhomeworkrestachivment2:1.4
-           Добавлен тестовый скрипт и вывод к нему. запуск `python3 test/test_req.py`
-           Ещё можно протестировать используя CURL `curl -X POST -d "number=10" http://[ip]:[port]/` 
+**20.12:** - Добавлен метод /install создающий базу данных и таблицу с нужными столбцами. Актуальная версия образа miemhomeworkrestachivment2:1.4
+           - Добавлен тестовый скрипт и вывод к нему. запуск `python3 test/test_req.py`
+           - Ещё можно протестировать используя CURL `curl -X POST -d "number=10" http://[ip]:[port]/` 
 ### Achievement №3
 Docker Pull Command
 
