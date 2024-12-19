@@ -1,0 +1,14 @@
+number=100
+101
+number=100
+Ошибка. Error. the number was already there (число уже было)
+number=99
+Ошибка. Error. current number that is one less than an existing number (число на единицу меньше, чем уже существующее)
+number=101
+Ошибка. Error. the number was already there (число уже было)
+number=test
+Ошибка. Error.  The data sent is not a number(прислали не число).
+number=-1
+Ошибка. Error.  The number is not in the required range(число меньше 0 или больше N).
+number=10000000
+Ошибка. Error.  The number is not in the required range(число меньше 0 или больше N).  
