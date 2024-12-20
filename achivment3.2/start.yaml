@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb-deployment
+  namespace: ns-19
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:10.3
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root00
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb-service
+  namespace: ns-19
+spec:
+  selector:
+    app: mariadb
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  namespace: ns-19
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: iliyahse/miemhomeworkrestachivment2:1.4
+        ports:
+        - containerPort: 80
+        env:
+        - name: hostDB
+          value: mariadb-service
+        - name: nameDB
+          value: test_dev_iot
+        - name: userDB
+          value: root
+        - name: passDB
+          value: root00
+        - name: logPath
+          value: ./example.txt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+  namespace: ns-19
+spec:
+  selector:
+    app: app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 80
+  type: NodePort
