@@ -4,6 +4,7 @@
 **25.12:** 
 - Добавлена конфигурация [ingress.yaml](https://github.com/lyzhinIG/CloudComputingHomework/blob/main/final/ingress.yaml)
 - Добавлены системные тесты в `test`, описание и примеры запуска.
+- Значение `number` по умолчанию ограничено 200 000.
 
 **20.12:** 
 - Добавлен метод /install создающий базу данных и таблицу с нужными столбцами. Актуальная версия образа miemhomeworkrestachivment2:1.4
