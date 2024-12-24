@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-test-19v3
+  namespace: ns-00
+spec:
+  rules:
+  - host: "app.test.net"
+    http:
+      paths:
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: app-service
+            port:
+              number: 8080
